@@ -122,14 +122,12 @@ namespace CyberSaloon.Core.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CyberSaloon.Core.API v1"));
-            }
             else
                 app.UseHttpsRedirection();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(it => it.SwaggerEndpoint("/swagger/v1/swagger.json", "CyberSaloon.Core.API v1"));
             app.UseRouting();
 
             app.UseCors(
