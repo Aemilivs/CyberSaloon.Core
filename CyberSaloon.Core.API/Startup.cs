@@ -18,6 +18,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Collections.Generic;
+using CyberSaloon.Core.API.Common;
 
 namespace CyberSaloon.Core.API
 {
@@ -63,8 +66,8 @@ namespace CyberSaloon.Core.API
                     }
                 );
             services.AddSwaggerGen(it =>
-            {
-                it.SwaggerDoc(
+                {
+                    it.SwaggerDoc(
                         "v1", 
                         new OpenApiInfo 
                         { 
@@ -79,6 +82,45 @@ namespace CyberSaloon.Core.API
                                 }
                         }
                     );
+                    it.AddSecurityDefinition(
+                            "oauth2",
+                            new OpenApiSecurityScheme
+                            {
+                                Type = SecuritySchemeType.OAuth2,
+                                Flows = 
+                                    new OpenApiOAuthFlows
+                                    {
+                                        Implicit =
+                                            new OpenApiOAuthFlow
+                                            {
+                                                AuthorizationUrl = new Uri(Configuration.GetValue<string>("Oauth:CyberSaloon:Authority"), UriKind.Absolute),
+                                                Scopes = new Dictionary<string, string>
+                                                {
+                                                    { "CyberSaloon.ServerAPI", "" },
+                                                    { "openid", "" },
+                                                    { "profile", "" }
+                                                }
+                                            }
+                                    }
+                            }
+                        );
+                    it.AddSecurityRequirement(
+                            new OpenApiSecurityRequirement
+                            {
+                                {
+                                    new OpenApiSecurityScheme
+                                    {
+                                        Reference =
+                                            new OpenApiReference
+                                            {
+                                                Type = ReferenceType.SecurityScheme,
+                                                Id = "oauth2"
+                                            }
+                                    },
+                                    new[] { "CyberSaloon.ServerAPI", "openid", "profile" }
+                                }
+                            }
+                        );
                 }
             );
 
@@ -127,7 +169,15 @@ namespace CyberSaloon.Core.API
                 app.UseHttpsRedirection();
 
             app.UseSwagger();
-            app.UseSwaggerUI(it => it.SwaggerEndpoint("/swagger/v1/swagger.json", "CyberSaloon.Core.API v1"));
+            app.UseSwaggerUI(
+                it =>
+                {
+                    it.SwaggerEndpoint("/swagger/v1/swagger.json", "CyberSaloon.Core.API v1");
+                    it.OAuthClientId("CyberSaloon.Client");
+                    it.OAuthUsePkce();
+                    it.OAuthUseBasicAuthenticationWithAccessCodeGrant();
+                }
+            );
             app.UseRouting();
 
             app.UseCors(

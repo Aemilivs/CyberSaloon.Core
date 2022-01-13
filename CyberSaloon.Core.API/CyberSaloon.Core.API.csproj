@@ -9,12 +9,13 @@
     <PackageReference Include="FluentValidation" Version="10.3.3" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="5.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.5"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
     <ProjectReference Include="..\CyberSaloon.Core.Repo\CyberSaloon.Core.Repo.csproj" />
     <ProjectReference Include="..\CyberSaloon.Core.DTO\CyberSaloon.Core.DTO.csproj" />
     <ProjectReference Include="..\CyberSaloon.Core.BLL\CyberSaloon.Core.BLL.csproj" />
